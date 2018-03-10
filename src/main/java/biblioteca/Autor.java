@@ -4,7 +4,7 @@ public class Autor {
 
 	private int id;
 	private String nume;
-	private boolean filter ;
+	private boolean filter;
 
 	public int getId() {
 		return id;
