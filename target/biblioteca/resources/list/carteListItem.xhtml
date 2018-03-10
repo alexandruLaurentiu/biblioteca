@@ -1,0 +1,169 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<composite:interface>
+	<composite:attribute name="listItem" required="true"></composite:attribute>
+</composite:interface>
+
+<composite:implementation>
+	<div class="row">
+		<div class="col-xs-9">
+			<p:panel id="dateleCartii"
+				widgetVar="dateCarte #{cc.attrs.listItem.id}" toggleable="true"
+				closable="true" collapsed="false">
+				<ui:fragment rendered="#{cc.attrs.listItem.imprumutata}">
+					<div class="w3-medium">Cartea este împrumutată</div>
+					<div class="w3-small">Numele cărții:
+						#{cc.attrs.listItem.nume}</div>
+					<div class="w3-tiny">Numele autorului:
+						#{cc.attrs.listItem.autor.nume}</div>
+					<div class="w3-tiny">Nume ascorist:
+						#{cc.attrs.listItem.client.nume}</div>
+					<div class="w3-tiny">Prenume ascorist:
+						#{cc.attrs.listItem.client.prenume}</div>
+					<div class="w3-tiny">Telefon
+						#{cc.attrs.listItem.client.phone}</div>
+					<ui:fragment
+						rendered="#{cc.attrs.listItem.client.timpRamas gt 0 and cc.attrs.listItem.client.timpRamas != 1}">
+						<div class="w3-tiny">
+							Împrumutul expiră în #{cc.attrs.listItem.client.timpRamas} zile.
+							<ui:fragment
+								rendered="#{cc.attrs.listItem.client.timpRamas gt 5}">
+								<span class="glyphicon glyphicon-ok-sign w3-text-green" />
+							</ui:fragment>
+							<ui:fragment
+								rendered="#{cc.attrs.listItem.client.timpRamas lt 6 and cc.attrs.listItem.client.timpRamas gt 0}">
+								<span
+									class="glyphicon glyphicon-exclamation-sign w3-text-yellow" />
+							</ui:fragment>
+						</div>
+					</ui:fragment>
+					<div class="w3-tiny">
+						<ui:fragment rendered="#{cc.attrs.listItem.client.timpRamas == 1}">
+					Împrumutul expiră mâine.
+						<span class="glyphicon glyphicon-exclamation-sign w3-text-yellow" />
+						</ui:fragment>
+					</div>
+					<div class="w3-tiny">
+						<ui:fragment
+							rendered="#{cc.attrs.listItem.client.timpRamas lt 0 or cc.attrs.listItem.client.timpRamas eq 0}">
+							Împrumutul a expirat.<span
+								class="glyphicon glyphicon-minus-sign w3-text-red" />
+						</ui:fragment>
+					</div>
+				</ui:fragment>
+				<ui:fragment rendered="#{not cc.attrs.listItem.imprumutata}">
+					<div class="w3-medium">Carte disponibilă</div>
+					<div class="w3-small">#{cc.attrs.listItem.nume}</div>
+					<div class="w3-tiny">#{cc.attrs.listItem.autor.nume}</div>
+				</ui:fragment>
+			</p:panel>
+
+			<p:panel id="formularImprumut"
+				widgetVar="formularImprumut #{cc.attrs.listItem.id}" closable="true"
+				toggleable="true" collapsed="true">
+				<h:form>
+					<div class="row">
+						<div class="col-xs-2">
+							<p:outputLabel for="numeClient" value="Nume"
+								styleClass="w3-small" />
+							<p:inputText id="numeClient" styleClass="w3-small"
+								value="#{cc.attrs.listItem.client.nume}" required="true"
+								requiredMessage="Nume obligatoriu" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p:message for="numeClient" display="text" styleClass="w3-tiny" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<p:outputLabel styleClass="w3-small" for="prenumeClient"
+								value="Prenume" />
+							<p:inputText id="prenumeClient" styleClass="w3-tiny"
+								required="true" requiredMessage="Prenume obligatoriu"
+								value="#{cc.attrs.listItem.client.prenume}" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p:message for="prenumeClient" display="text"
+								styleClass="w3-small" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<p:outputLabel styleClass="w3-small" for="clientPhone"
+								value="Telefon:" />
+							<p:inputMask id="clientPhone" styleClass="w3-small"
+								required="true" requiredMessage="Telefon obligatoriu"
+								value="#{cc.attrs.listItem.client.phone}" mask="(9999) 999 999" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p:message for="clientPhone" display="text" styleClass="w3-tiny" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-2">
+							<p:outputLabel styleClass="w3-small" for="perioada"
+								value="Perioada" />
+							<p:calendar id="perioada" styleClass="w3-small" required="true"
+								mindate="#{cc.attrs.listItem.client.minDate()}"
+								maxdate="#{cc.attrs.listItem.client.borrowPeriod()}"
+								requiredMessage="Perioada obligatorie"
+								value="#{cc.attrs.listItem.client.endDate}" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-xs-12">
+							<p:message for="perioada" display="text" styleClass="w3-tiny" />
+						</div>
+					</div>
+					<div style="height: 20;"></div>
+					<div class="row">
+						<div class="col-xs-4">
+							<p:commandButton value="Împrumută"
+								styleClass="w3-btn w3-white w3-border w3-border-blue w3-round w3-tiny col-xs-12"
+								actionListener="#{gestiuneBean.imprumuta(cc.attrs.listItem)}"
+								update="#{cc.clientId}:dateleCartii #{cc.clientId}:actions @form"
+								oncomplete="if (args &amp;&amp; !args.validationFailed) {PF('formularImprumut #{cc.attrs.listItem.id}').collapse(); PF('panelActions #{cc.attrs.listItem.id}').expand(); PF('dateCarte #{cc.attrs.listItem.id}').expand(); return false;} else{document.getElementById('#{cc.clientId}:dateleCartii').style.display = 'none'; document.getElementById('#{cc.clientId}:actions').style.display = 'none'; return false;}" />
+						</div>
+						<div>
+							<p:commandButton value="Renunță" process="@this"
+								update="#{cc.clientId}:dateleCartii #{cc.clientId}:actions @form"
+								styleClass="w3-btn w3-white w3-border w3-border-red w3-round w3-tiny"
+								onclick="PF('formularImprumut #{cc.attrs.listItem.id}').collapse(); PF('panelActions #{cc.attrs.listItem.id}').expand(); PF('dateCarte #{cc.attrs.listItem.id}').expand();" />
+						</div>
+					</div>
+				</h:form>
+			</p:panel>
+		</div>
+		<div class="col-xs-3">
+			<p:panel id="actions"
+				widgetVar="panelActions #{cc.attrs.listItem.id}" toggleable="true"
+				closable="true" collapsed="false">
+				<ui:fragment rendered="#{not cc.attrs.listItem.imprumutata}">
+					<p:commandButton value="Împrumută" process="@this"
+						class="w3-btn w3-white w3-border w3-border-blue w3-tiny w3-round"
+						onclick="PF('formularImprumut #{cc.attrs.listItem.id}').expand(); PF('panelActions #{cc.attrs.listItem.id}').collapse(); PF('dateCarte #{cc.attrs.listItem.id}').collapse();" />
+				</ui:fragment>
+				<ui:fragment rendered="#{cc.attrs.listItem.imprumutata}">
+					<p:commandButton value="Returnează"
+						process="formularImprumut dateleCartii actions"
+						class="w3-btn w3-white w3-border w3-border-green w3-text-green w3-round-large w3-tiny"
+						update="dateleCartii actions formularImprumut"
+						actionListener="#{gestiuneBean.returnareCarte(cc.attrs.listItem)}" />
+				</ui:fragment>
+			</p:panel>
+		</div>
+	</div>
+	<p:separator />
+</composite:implementation>
+
+</html>

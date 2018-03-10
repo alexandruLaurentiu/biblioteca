@@ -1,0 +1,78 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+
+<composite:interface>
+	<composite:attribute name="bean" required="true" />
+	<composite:attribute name="carte" required="true" />
+</composite:interface>
+<composite:implementation>
+	<p:panel id="dateCarte" widgetVar="dateCarte #{cc.attrs.carte.id}"
+		toggleable="true" closable="true">
+		<div class="row">
+			<div class="col-xs-9">
+				<div class="w3-small">Numele cărții: #{cc.attrs.carte.nume}</div>
+				<div class="w3-tiny">Numele autorului:
+					#{cc.attrs.carte.autor.nume}</div>
+				<div class="w3-tiny">Numele editurii:
+					#{cc.attrs.carte.editura.nume}</div>
+			</div>
+			<div class="col-xs-3">
+				<p:commandButton widgetVar="editButton" value="Editare"
+					class="w3-btn w3-white w3-border w3-border-blue w3-round w3-tiny"
+					onclick="PF('editCarte #{cc.attrs.carte.id}').expand(); PF('dateCarte #{cc.attrs.carte.id}').collapse();" />
+				<p:commandButton value="Șterge cartea"
+					class="w3-btn w3-ripple w3-red w3-tiny" update="@form"
+					actionListener="#{cc.attrs.bean.deleteCarte(cc.attrs.carte)}" />
+			</div>
+		</div>
+	</p:panel>
+	<p:panel id="editCarte" widgetVar="editCarte #{cc.attrs.carte.id}"
+		closable="true" toggleable="true" collapsed="true">
+		<div class="row">
+			<div class="col-xs-2">
+				<p:outputLabel styleClass="w3-small" for="numeCarte"
+					value="Numele cărții" />
+				<p:inputText id="numeCarte" styleClass="w3-small"
+					value="#{cc.attrs.carte.nume}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-2">
+				<p:outputLabel styleClass="w3-small" for="numeAutorCarte"
+					value="Numele autorului" />
+				<p:inputText id="numeAutorCarte" styleClass="w3-small"
+					value="#{cc.attrs.carte.autor.nume}" />
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-2">
+				<p:outputLabel styleClass="w3-small" for="numeEdituraCarte"
+					value="Numele editurii" />
+				<p:inputText id="numeEdituraCarte" styleClass="w3-small"
+					value="#{cc.attrs.carte.editura.nume}" />
+			</div>
+		</div>
+		<div style="height: 20;"></div>
+		<div class="row">
+			<div class="col-xs-2">
+				<p:commandButton value="Salvează modificări"
+					class="w3-btn w3-white w3-border w3-border-green w3-text-green w3-round w3-tiny"
+					update="dateCarte editCarte"
+					actionListener="#{cc.attrs.bean.editCarte(cc.attrs.carte)}"
+					oncomplete="PF('editCarte #{cc.attrs.carte.id}').collapse(); PF('dateCarte #{cc.attrs.carte.id}').expand();" />
+			</div>
+			<div>
+				<p:commandButton value="Închide"
+					class="w3-btn w3-white w3-border w3-border-red w3-round w3-tiny"
+					onclick="PF('editCarte #{cc.attrs.carte.id}').collapse(); PF('dateCarte #{cc.attrs.carte.id}').expand();" />
+			</div>
+		</div>
+	</p:panel>
+	<p:separator />
+</composite:implementation>
+
+</html>

@@ -1,0 +1,25 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:list="http://java.sun.com/jsf/composite/list"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<ui:composition template="resources/template/template.xhtml">
+	<ui:define name="content">
+		<p:tabView cache="false" dynamic="false">
+			<p:ajax event="tabChange" update="tab1Content tab2Content" />
+			<p:tab title="Biblioteca">
+				<p:outputPanel id="tab1Content">
+					<list:carteList bean="#{gestiuneBean}" />
+				</p:outputPanel>
+			</p:tab>
+			<p:tab title="Administrare">
+				<p:outputPanel id="tab2Content">
+					<list:administrareList bean="#{administrareBean}" />
+				</p:outputPanel>
+			</p:tab>
+		</p:tabView>
+	</ui:define>
+</ui:composition>
+</html>

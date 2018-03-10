@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:list="http://java.sun.com/jsf/composite/list">
+
+<composite:interface>
+	<composite:attribute name="bean" required="true"></composite:attribute>
+</composite:interface>
+<composite:implementation>
+	<p:outputPanel id="emptyState">
+		<ui:fragment rendered="#{cc.attrs.bean.cartiFiltrate.size() eq 0}">
+			<h1 class="w3-center">
+				<small>Nici o carte in bibliotecă.</small>
+			</h1>
+		</ui:fragment>
+	</p:outputPanel>
+	<div class="row">
+		<div class="col-xs-9">
+			<div class="w3-card-4">
+				<p:outputPanel id="lista">
+					<ui:repeat value="#{cc.attrs.bean.cartiFiltrate}" var="listItem">
+						<list:carteListItem listItem="#{listItem}" />
+					</ui:repeat>
+				</p:outputPanel>
+			</div>
+		</div>
+		<ui:fragment rendered="#{cc.attrs.bean.cartiFiltrate.size() gt 0 and cc.attrs.bean.cartiFiltrate.size() gt 1}">
+			<div class="col-xs-3">
+				<div class="w3-card-4">
+					<h:form id="filtre">
+						<div style="height: 10;"></div>
+						<div class="w3-center">
+							<p:panelGrid columns="2" styleClass="w3-small ui-noborder">
+								<p:row>
+									<p:column>
+										<p:inputText id="searchField" placeholder="Caută cartea..."
+											value="#{cc.attrs.bean.searchField}" />
+									</p:column>
+									<p:column>
+										<p:commandButton
+											value="&lt;i class='glyphicon glyphicon-search' style='height: 14;' &gt;&lt;/i&gt;"
+											actionListener="#{cc.attrs.bean.freeSearch()}"
+											update="#{cc.clientId}:lista #{cc.clientId}:emptyState"
+											styleClass="w3-white w3-border w3-border-grey w3-text-grey"
+											escape="false" />
+									</p:column>
+								</p:row>
+							</p:panelGrid>
+						</div>
+						<p:separator />
+						<div class="w3-center">
+							<u>Autori</u>
+						</div>
+						<div style="height: 10;"></div>
+						<ui:repeat var="autor" value="#{cc.attrs.bean.autori}">
+							<div class="container">
+								<p:selectBooleanCheckbox id="checkboxAutor"
+									styleClass="w3-check filters" value="#{autor.filter}" />
+								<p:outputLabel for="checkboxAutor" value="#{autor.nume}"
+									styleClass="w3-tiny" />
+							</div>
+						</ui:repeat>
+
+						<p:separator />
+						<div class="w3-center">
+							<u>Edituri</u>
+						</div>
+						<div style="height: 10;"></div>
+						<ui:repeat var="editura" value="#{cc.attrs.bean.edituri}">
+							<div class="container">
+								<p:selectBooleanCheckbox id="checkboxEditura"
+									styleClass="w3-check filters" value="#{editura.filter}" />
+								<p:outputLabel for="checkboxEditura" value="#{editura.nume}"
+									styleClass="w3-tiny" />
+							</div>
+						</ui:repeat>
+
+						<p:separator />
+						<div class="w3-center">
+							<p:commandButton value="Filtrare cărți"
+								styleClass="w3-btn w3-white w3-border w3-border-blue w3-text-blue w3-small w3-round-large"
+								update="#{cc.clientId}:lista #{cc.clientId}:filtre #{cc.clientId}:emptyState"
+								actionListener="#{cc.attrs.bean.filtrare()}" />
+						</div>
+						<div class="col-xs-12" style="height: 15;"></div>
+						<div class="w3-center">
+							<p:commandButton value="Resetare"
+								styleClass="w3-btn w3-white w3-border w3-border-red w3-text-red w3-small w3-round-large"
+								update="#{cc.clientId}:lista #{cc.clientId}:filtre #{cc.clientId}:emptyState"
+								actionListener="#{cc.attrs.bean.resetareFiltre()}" />
+							<div style="height: 20;"></div>
+						</div>
+
+					</h:form>
+
+				</div>
+			</div>
+		</ui:fragment>
+	</div>
+</composite:implementation>
+
+</html>

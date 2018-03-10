@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:list="http://java.sun.com/jsf/composite/list">
+
+<composite:interface>
+	<composite:attribute name="bean" required="true"></composite:attribute>
+</composite:interface>
+<composite:implementation>
+	<div class="w3-card-4">
+		<h:form id="formularAdministrare">
+			<p:dataScroller value="#{cc.attrs.bean.carti}" var="carte">
+				<list:carteListItemAdmin carte="#{carte}" bean="#{cc.attrs.bean}" />
+			</p:dataScroller>
+		</h:form>
+
+		<p:panel widgetVar="butonAdauga" toggleable="true" closable="true">
+			<p:commandLink value="+"
+				class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-blue"
+				onclick="PF('adaugaCarte').expand(); PF('butonAdauga').collapse();" />
+		</p:panel>
+
+
+		<p:panel id="panelAdaugaCarte" widgetVar="adaugaCarte"
+			toggleable="true" closable="true" collapsed="true">
+			<h:form>
+				<div class="row">
+					<div class="col-xs-2">
+						<p:outputLabel styleClass="w3-small" for="numeCarte"
+							value="Numele cărții noi" />
+						<p:inputText id="numeCarte" styleClass="w3-small"
+							value="#{cc.attrs.bean.numeCarte}" required="true"
+							requiredMessage="Numele cărții obligatoriu." />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p:message styleClass="w3-tiny" for="numeCarte" display="text" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<p:outputLabel styleClass="w3-small" for="numeAutorCarte"
+							value="Numele autorului" />
+						<p:inputText id="numeAutorCarte" styleClass="w3-small"
+							value="#{cc.attrs.bean.autorCarte}" required="true"
+							requiredMessage="Autorul obligatoriu." />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p:message styleClass="w3-tiny" for="numeAutorCarte"
+							display="text" />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-2">
+						<p:outputLabel styleClass="w3-small" for="numeEdituraCarte"
+							value="Numele editurii" />
+						<p:inputText id="numeEdituraCarte" styleClass="w3-small"
+							value="#{cc.attrs.bean.edituraCarte}" required="true"
+							requiredMessage="Editura obligatorie." />
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-12">
+						<p:message styleClass="w3-tiny" for="numeEdituraCarte"
+							display="text" />
+					</div>
+				</div>
+				<div style="height: 20;"></div>
+				<div class="row">
+					<div class="col-xs-2">
+						<p:commandButton value="Finalizare"
+							styleClass="w3-btn w3-white w3-border w3-border-blue w3-round w3-tiny col-xs-12"
+							actionListener="#{cc.attrs.bean.addCarte()}"
+							update="#{cc.clientId}:formularAdministrare @form"
+							oncomplete="if (args &amp;&amp; !args.validationFailed) {PF('adaugaCarte').collapse(); PF('butonAdauga').expand(); return false;}" />
+					</div>
+					<div>
+						<p:commandButton value="Închide" update="@form" process="@this"
+							styleClass="w3-btn w3-white w3-border w3-border-red w3-round w3-tiny"
+							oncomplete="PF('adaugaCarte').collapse(); PF('butonAdauga').expand();"
+							actionListener="#{cc.attrs.bean.resetFields()}" />
+					</div>
+				</div>
+			</h:form>
+		</p:panel>
+	</div>
+</composite:implementation>
+</html>

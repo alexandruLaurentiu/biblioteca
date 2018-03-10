@@ -1,0 +1,53 @@
+.filters .ui-chkbox-box {
+	background-color: white;
+	border-color: #2196F3 !important;
+}
+
+.ui-widget-content {
+	border: none;
+}
+
+.nav-tabs {
+	border-bottom: 0px solid #ddd;
+}
+
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: inherit;
+}
+
+body {
+	position: relative;
+	margin: 0;
+	padding-bottom: 6rem;
+	min-height: 100%;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+}
+
+.footer {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: #efefef;
+	text-align: center;
+}
+
+.ui-inputfield, .ui-widget-content .ui-inputfield, .ui-widget-header .ui-inputfield
+	{
+	box-shadow: none;
+}
+
+.ui-messages-error, .ui-message-error {
+	background-color: white;
+	border-color: white;
+}
+
+.ui-message-info, .ui-message-error, .ui-message-warn, .ui-message-fatal
+	{
+	border: none;
+}

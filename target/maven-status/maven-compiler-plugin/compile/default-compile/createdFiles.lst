@@ -1,0 +1,11 @@
+biblioteca\LoginBean.class
+biblioteca\AdministrareBean.class
+biblioteca\Client.class
+biblioteca\Autor.class
+biblioteca\DbConn.class
+biblioteca\Editura.class
+biblioteca\GestiuneBean.class
+biblioteca\Incarcare.class
+biblioteca\Util.class
+biblioteca\AuthFilter.class
+biblioteca\Carte.class

@@ -1,0 +1,24 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:list="http://java.sun.com/jsf/composite/list"
+	xmlns:composite="http://java.sun.com/jsf/composite">
+<ui:composition template="resources/template/template.xhtml">
+	<ui:define name="content">
+		<ul class="nav nav-tabs">
+			<li><a href="biblioteca.xhtml">Bibliotecă</a></li>
+			<li class="active"><a href="administrare.xhtml">Administrare</a></li>
+			<div class="w3-right-align">
+			<h:form>
+				<p:commandButton value="Deconectare"
+					styleClass="w3-btn w3-red w3-border w3-border-red w3-small w3-round-large"
+					actionListener="#{loginBean.logout}" />
+			</h:form>
+		</div>
+		</ul>
+		<list:administrareList bean="#{administrareBean}" />
+	</ui:define>
+</ui:composition>
+</html>
