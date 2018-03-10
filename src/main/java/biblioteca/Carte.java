@@ -12,7 +12,7 @@ public class Carte {
 	private boolean imprumutata;
 	private boolean show;
 
-	public Carte() {
+	public Carte()  {
 
 	}
 
