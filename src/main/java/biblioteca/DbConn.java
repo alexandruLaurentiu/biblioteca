@@ -14,8 +14,8 @@ public class DbConn {
 	private static final String toateCartile = "select * from carti";
 
 	private String url = "jdbc:mysql://localhost:3306/biblioteca";
-	private String username = "root";
-	private String password = "admin";
+	private String username = "admin";
+	private String password = "";
 
 	private Connection conn;
 	private Statement stmt;

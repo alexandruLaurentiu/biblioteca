@@ -1,6 +1,6 @@
 package biblioteca;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Incarcare {
@@ -8,7 +8,10 @@ public class Incarcare {
 	private DbConn date = new DbConn();
 
 	public List<Carte> carti() {
-		return date.getCarti();
+		List<Carte> carti = date.getCarti();
+
+		carti.sort((carte1, carte2) -> carte1.getFlag().compareTo(carte2.getFlag()));
+		return carti;
 
 		// Autor eminescu = new Autor("Eminescu");
 		// Autor zafon = new Autor("Carlos Ruiz Zafon");

@@ -9,6 +9,7 @@ public class Carte {
 	private Autor autor;
 	private Editura editura;
 	private Client client = new Client();
+	private String flag;
 	private boolean imprumutata;
 	private boolean show;
 
@@ -89,6 +90,14 @@ public class Carte {
 
 	public void setClient(Client client) {
 		this.client = client;
+	}
+
+	public String getFlag() {
+		return isImprumutata() ? "1" : "0";
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 
 }
